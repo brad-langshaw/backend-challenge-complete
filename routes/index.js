@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const todoService = require("./../services/todos");
-const { methodNotAllowed, notFound, notAcceptable } = require("./../services/errors");
+const { notFound } = require("./../services/errors");
 const router = express.Router({
     caseSensitive: true
 });
@@ -11,7 +11,7 @@ module.exports = (knex) => {
         .get((request, response, next) => {
             const pageNo = request.query.pageNo || 1;
             const itemsPerPage = request.query.itemsPerPage || 10;
-          
+
             Promise.all([
                 todoService(knex).getList({
                     pageNo: pageNo,
@@ -31,10 +31,11 @@ module.exports = (knex) => {
         })
         .post(bodyParser.json(), bodyParser.urlencoded({ extended: false }), (request, response, next) => {
             // Adds a new entry then gets the lists of all entries
-            todoService(knex).createItem()
+
             const pageNo = request.query.pageNo || 1;
             const itemsPerPage = request.query.itemsPerPage || 10;
-          
+
+            todoService(knex).createItem(),
             Promise.all([
                 todoService(knex).getList({
                     pageNo: pageNo,
@@ -54,9 +55,9 @@ module.exports = (knex) => {
         })
         .patch((request, response, next) => {
             // Applies patch to all names, changes updated date
-            
             const pageNo = request.query.pageNo || 1;
             const itemsPerPage = request.query.itemsPerPage || 10;
+
             todoService(knex).patchList(),
             Promise.all([
                 todoService(knex).getList({
@@ -79,12 +80,13 @@ module.exports = (knex) => {
             next(todoService(knex).putList());
         })
         .delete((request, response, next) => {
-           //Sets all items to deleted.
+            //Sets all items to deleted.
             const pageNo = request.query.pageNo || 1;
             const itemsPerPage = request.query.itemsPerPage || 10;
-            todoService(knex).deleteAll()
+
+            todoService(knex).deleteAll(),
             Promise.all([
-               // Displays Deleted Itmes
+                // Displays Deleted Itmes
                 todoService(knex).getDeleted({
                     pageNo: pageNo,
                     itemsPerPage: itemsPerPage
@@ -157,8 +159,8 @@ module.exports = (knex) => {
                     next(notFound());
                 }
             }).catch(next);
-                 })
+        })
     ; // close router.route("/:listId")
-    
+
     return router;
 }; // close module.exports

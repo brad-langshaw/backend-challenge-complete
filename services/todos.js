@@ -54,12 +54,10 @@ module.exports = (knex) => {
                 return record;
             });
         },
-    
         createItem: (data) => {
             const record = extend(false, {
                 id: shortid.generate(),
                 name: "",
-                todoTask: "Get your car washed later",
                 created: new Date(),
                 updated: new Date(),
                 isDeleted: 0
@@ -76,7 +74,6 @@ module.exports = (knex) => {
             const record = extend(false, {
                 id: pk,
                 name: "Custom Item",
-                todoTask: "Go grocery shopping " + pk,
                 created: new Date(),
                 updated: new Date(),
                 isDeleted: 0
@@ -107,7 +104,7 @@ module.exports = (knex) => {
             record.updated = new Date();
             record.name = "Patched in full list patch, all items are no longer deleted";
             record.isDeleted = false;
-            
+
             return knex(tableName).update(record).then(() => {
                 return listService.getList(data);
             });
@@ -118,7 +115,7 @@ module.exports = (knex) => {
             record.updated = new Date();
             record.name = "Patched in single item patch, this item is no longer deleted";
             record.isDeleted = false;
-            
+
             return knex(tableName).update(record).where({
                 id: pk
             }).then(() => {
@@ -130,8 +127,7 @@ module.exports = (knex) => {
 
             record.updated = new Date();
             record.name = "Put was called on all items";
-            
-            
+
             return knex(tableName).update(record).then(() => {
                 return listService.getList(data);
             });
@@ -148,7 +144,8 @@ module.exports = (knex) => {
         },
         deleteAll: (data) => {
             const record = extend(false, {}, data);
-            record.isDeleted = true
+
+            record.isDeleted = true;
             record.updated = new Date();
 
             return knex(tableName).update(record).where({

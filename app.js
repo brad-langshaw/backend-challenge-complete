@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-
 const { notFound } = require("./services/errors");
 
 module.exports = (knex) => {
@@ -8,8 +7,6 @@ module.exports = (knex) => {
     app.set("json spaces", 4);
 
     app.use("/", require("./routes/index")(knex));
-    
-
     app.use("*", (request, response, next) => {
         next(notFound());
     });

@@ -10,7 +10,6 @@ module.exports = (knex) => {
                 */
                 table.string("id").primary();
                 table.string("name").notNull();
-                table.string("todoTask").notNull();
                 table.dateTime("created").notNull().defaultTo(knex.fn.now());
                 table.dateTime("updated").notNull().defaultTo(knex.fn.now());
                 table.boolean("isDeleted").notNull().defaultTo(false);
